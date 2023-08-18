@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-container">
+  <div class="row ml-5 mr-5">
+    <div class="col-12 text-center">
+      <h1>Calculator</h1>
+    </div>
+  </div>
+</div>
+<div class="container calculator-container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="calculator">
+        <div class="container">
+          <div class="container main-calc">
+            <div class="row ml-3 mr-3 pt-5">
+              <div class="col text-center">
+                <input type="text" value="" id="display" disabled >
+              </div>
+            </div>
+            <div class="check mt-5 text-center">
+              <div class="row ml-5 mr-5">
+                <div class="col ml-5 mr-5 pl-3 pr-3">
+                  <button id="b7" onclick="sendvalue(7);">7</button>
+                  <button id="b8" onclick="sendvalue(8);">8</button>
+                  <button id="b9" onclick="sendvalue(9);">9</button>
+                  <button id="bdivide" onclick="operator('divide');">÷</button>
+                </div>
+              </div>
+              <div class="row ml-5 mr-5">
+                <div class="col ml-5 mr-5 pl-3 pr-3">
+                  <button id="b4" onclick="sendvalue(4);">4</button>
+                  <button id="b5" onclick="sendvalue(5);">5</button>
+                  <button id="b6" onclick="sendvalue(6);">6</button>
+                  <button  id="bmultiply"  onclick="operator('multiply');">*</button>
+                </div>
+              </div>
+              <div class="row ml-5 mr-5">
+                <div class="col ml-5 mr-5 pl-3 pr-3">
+                  <button id="b1" onclick="sendvalue(1);">1</button>
+                  <button id="b2" onclick="sendvalue(2);">2</button>
+                  <button id="b3" onclick="sendvalue(3);">3</button>
+                  <button id="bminus" onclick="operator('minus');">-</button>
+                </div>
+              </div>
+              <div class="row ml-5 mr-5">
+                <div class="col ml-5 mr-5 pl-3 pr-3">
+                  <button id="b0" onclick="sendvalue(0);">0</button>
+                  <button id="bdot" onclick="sendvalue('decimal');">.</button>
+                  <button id="bequal" onclick="result('equal');">=</button>
+                  <button id="bplus" onclick="operator('plus');">+</button>
+                </div>
+              </div>
+              <div class="row ml-5 mr-5">
+                <div class="col ml-5 mr-5 pl-3 pr-3 mb-2">
+                  <button id="ba" onclick="reset();">AC</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+
+var v1 = "", v2 = "", op = "", state = 1, chkdec = 0, s1_hasDecimal = false,s2_hasDecimal = false,tmp=0,a=9;
+
+    
+    // Initiation the display screen; 
+    document.getElementById("display").value="0";
+    
+    // Resetting the display screen; 
+    function reset(){
+    v1 = "";
+    v2 = "";
+    op = "";
+    state = 1;
+    s1_hasDecimal = false;
+    s2_hasDecimal = false;
+    document.getElementById("display").value = "0";
+    }
+    
+    // Sets the value of operation 
+    function sendvalue(n)
+    {
+        if (state == 0) {
+            document.getElementById("display").value ="";
+            state = 1;
+        }
+        
+
+
+        if (state == 1) {
+            if(v1.length < a)
+            {
+                if (n == 'decimal')
+                {
+                
+
+                        if(!s1_hasDecimal)
+                        {
+                            s1_hasDecimal = true;
+                            v1 = v1.toString() + ".";
+                            document.getElementById("display").value = v1;
+                        }
+                        else
+                        {
+                            alert('Invalid Input !')
+                        } 
+                }
+                else
+                {
+                    v1 = v1.toString() + n.toString();
+                    document.getElementById("display").value = v1;
+                }
+            }
+            else 
+            {
+                alert("Maximum of " +a+ " digits are allowed");
+            }
+            
+        }
+
+        
+        if(state == 2) {
+            if(v2.length < a)
+                {       
+                    if (n == 'decimal')
+                    {
+
+                        if (!s2_hasDecimal)
+                        {
+                            s2_hasDecimal = true;
+                            v2 = v2.toString() + ".";
+                            document.getElementById("display").value = v2;
+                        }
+                        else
+                            {
+                                alert('Invalid Input  !')
+                            }
+
+                        }
+                    else
+                    {
+                        v2 = v2.toString() + n.toString();
+                        document.getElementById("display").value = v2;
+                    }
+                      
+                }
+                        
+                       
+        
+            else 
+            {
+              alert("Maximum of " +a+ " digits are allowed");
+            }
+            
+        }
+
+    }
+
+    // Captures the operator;     
+    function operator(o){
+        if (state == 2) {
+        result(); 
+    }
+        op=o;
+        state=2;
+    }
+    
+    // Calculate Results
+    function result() {
+
+    if (op == "plus") {
+    res = Number(v1) + Number(v2);
+    } else if (op == "minus") {
+        res = Number(v1) - Number(v2);
+    } else if (op == "divide") {
+        res = Number(v1) / Number(v2);
+    } else if (op == "multiply") {
+        res = Number(v1) * Number(v2);
+    }
+    
+    //checking the logical error
+    if(res==Infinity)
+    {
+      alert('Result is Infinity. Resetting your calculations')
+      reset();
+      return;
+    }
+    
+    var isdec = res % 1 != 0;
+
+    
+    if (isdec) {
+        document.getElementById("display").value = res.toFixed(3);
+    } else {
+        document.getElementById("display").value = res;
+    }
+    
+    state = 0;
+    s1_hasDecimal = false;
+    s2_hasDecimal = false;
+  
+    v1 = res; 
+    v2 = "";
+}
+
+    
+    
+</script>
+</html>
